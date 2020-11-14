@@ -108,27 +108,21 @@ def ej3():
         propiedades_dos_amb = csv.DictWriter(fo, fieldnames=header)
         propiedades_dos_amb.writeheader()
 
-
-        for i in range(len_reader):
-            row = reader[i]
-            ambientes = str(row.get('ambientes'))
-            if ambientes == '2': 
-                propiedades_dos_amb.writerow(row)   
-                dos_ambientes +=1
+        with open('propiedades_tres_amb.csv', 'w', newline='') as fo:
+            header = ['','fecha','latitud','longitud','url','titulo','tipo_propiedad','precio','moneda','m2','ambientes']
+            propiedades_tres_amb = csv.DictWriter(fo, fieldnames=header)
+            propiedades_tres_amb.writeheader()    
 
 
-    with open('propiedades_tres_amb.csv', 'w', newline='') as fo:
-        header = ['','fecha','latitud','longitud','url','titulo','tipo_propiedad','precio','moneda','m2','ambientes']
-        propiedades_tres_amb = csv.DictWriter(fo, fieldnames=header)
-        propiedades_tres_amb.writeheader()    
-
-        
-        for i in range(len_reader):
-            row = reader[i]
-            ambientes = str(row.get('ambientes'))
-            if ambientes == '3':
-                propiedades_tres_amb.writerow(row)
-                tres_ambientes += 1
+            for i in range(len_reader):
+                row = reader[i]
+                ambientes = str(row.get('ambientes'))
+                if ambientes == '2': 
+                    propiedades_dos_amb.writerow(row)   
+                    dos_ambientes +=1
+                if ambientes == '3':
+                    propiedades_tres_amb.writerow(row)
+                    tres_ambientes += 1
 
     
     print(f'Las {dos_ambientes} propiedades de 2 ambientes fueron guardadas en el archivo "propiedades_dos_amb.csv" ')
