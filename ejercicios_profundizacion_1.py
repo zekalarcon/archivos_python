@@ -11,10 +11,11 @@ Programa creado para que practiquen los conocimietos
 adquiridos durante la semana
 '''
 
-__author__ = "Inove Coding School"
-__email__ = "alumnos@inove.com.ar"
-__version__ = "1.3"
+__author__ = "Ezequiel Alarcon"
+__email__ = "zekalarcon@gmail.com"
 
+
+import csv
 
 def ej1():
     print("Cuenta caracteres")
@@ -23,16 +24,23 @@ def ej1():
     '''
     Realizar un prorgrama que cuenta la cantidad de caracteres
     (todo tipo de caracter, los espacios cuentan) de un archivo.
-    Abra el archivo "text.txt" en modo "lectura", lea linea a
+    Abra el archivo "texto.txt" en modo "lectura", lea linea a
     linea el archivo, y cuente la cantidad de caracteres de cada línea.
     Debe realizar la sumatoria total de la cantidad de caracteres de todas
     las líneas para obtener el total del archivo e imprimirlo en pantalla
     '''
 
 
+    with open('texto.txt', 'r') as fi:
+        for line in fi:
+            cantidad_letras += len(line)
+        print(f'La cantidad de caracteres en el archivo "texto.txt" son: {cantidad_letras}')    
+
+
+
 def ej2():
     print("Transcribir!")
-    cantidad_letras = 0
+    
     '''
     Deberá abrir un archivo txt para escritura (un archivo nuevo)
     Luego mediante un bucle deberá pedir por consola que
@@ -49,11 +57,26 @@ def ej2():
     NOTA: Recuerde agregar el salto de línea "\n" a cada entrada
     de texto de la consola antes de copiar la archivo.
     '''
+    
+
+    cantidad_letras = 0
+
+    
+    with open('texto_contado.txt', 'w') as fo:
+        while True:
+            texto = input('Ingrese texto:\n')
+            if texto == '':
+                break
+            fo.writelines(texto + '\n')
+            cantidad_letras += len(texto) + 1 
+        
+    
+    print(f'La cantidad de caracteres en el texto son: {cantidad_letras}')      
 
 
 def ej3():
     print("Escrutinio de los alquileres de Capital Federal")
-    cantidad_ambientes = 2
+    
 
     '''
     Realizar un prorgrama que solicite la cantidad de
@@ -68,6 +91,42 @@ def ej3():
     4) Obtener el mínimo valor de alquiler en "pesos"
     de la cantidad de ambientes deseados.
     '''
+    contador = 0
+    suma_precio = 0
+    
+
+    with open('propiedades.csv', 'r') as fi:
+        reader = list(csv.DictReader(fi))
+        len_reader = len(reader)
+    
+
+        while True:
+            minimo = None
+            maximo = None
+            cantidad_ambientes = input('Ingrese cantidad de ambientes o "FIN" para terminar:\n')
+            if cantidad_ambientes == 'FIN':
+                break
+            for i in range(len_reader):
+                row = reader[i]
+                ambientes = row.get('ambientes')
+                moneda = row.get('moneda')
+                precio = row.get('precio')
+                if ambientes == cantidad_ambientes and moneda == 'ARS':
+                    contador += 1
+                    suma_precio += float(precio)
+                    if maximo == None or maximo < float(precio):
+                        maximo = float(precio)
+                    if minimo is None or float(precio) < minimo:
+                        minimo = 0
+                        minimo = float(precio)
+            
+            
+            print(f'La cantidad de departamentos en alquiler de {cantidad_ambientes} ambientes es: {contador}')
+            print(f'El promedio de los alquileres de departamentos en pesos, es: ${suma_precio/contador:.2f}')
+            print(f'El departamento mas caro es: {maximo}')   
+            print(f'EL departamento mas barato es: {minimo}') 
+
+
 
 
 if __name__ == '__main__':

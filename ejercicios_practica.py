@@ -11,9 +11,9 @@ Programa creado para poner a prueba los conocimientos
 adquiridos durante la clase
 '''
 
-__author__ = "Inove Coding School"
-__email__ = "alumnos@inove.com.ar"
-__version__ = "1.2"
+__author__ = "Ezequiel Alarcon"
+__email__ = "zekalarcon@gmail.com"
+
 
 import csv
 import re
@@ -21,7 +21,6 @@ import re
 
 def ej1():
     # Ejercicios con archivos txt
-    cantidad_lineas = 0
 
     '''
     Realizar un prorgrama que cuenta la cantidad de líneas
@@ -36,10 +35,18 @@ def ej1():
     de líneas encontradas.
     '''
 
+    contar_lineas = 0
+
+    with open('texto.txt', 'r') as fi:
+        for lineas in fi:
+            contar_lineas += 1
+
+    print(f'La cantidad de lineas en el archivo texto.txt son: {contar_lineas}')
+
 
 def ej2():
     # Ejercicios con archivos txt
-    cantidad_lineas = 0
+    
     '''
     Copy paste!!
     Deberá abrir dos archivo txt, uno para lectura (fi) y otro
@@ -60,10 +67,24 @@ def ej2():
 
     # Recuerde cerrar los archivos al final ;)
 
+    cantidad_lineas = 0
+    fi = open('notas.txt', 'r')
+    fo = open('notas_copiadas.txt', 'w')
+
+    for lineas in fi:
+        fo.writelines(lineas)
+        cantidad_lineas += 1
+
+    fi.close()
+    fo.close() 
+
+    print(f'La cantidad de lineas copiadas fueron: {cantidad_lineas}')   
+            
+
 
 def ej3():
     # Ejercicios con archivos CSV
-    archivo = 'propiedades.csv'
+    
     '''
     Realice un programa que abra el archivo CSV "propiedades.csv"
     en modo lectura. Recorrar dicho archivo y contar
@@ -73,9 +94,53 @@ def ej3():
     '''
 
 
+    dos_ambientes = 0
+    tres_ambientes = 0
+    
+    
+    with open('propiedades.csv', 'r') as fi:
+        reader = list(csv.DictReader(fi))
+        len_reader = len(reader)
+
+    
+    with open('propiedades_dos_amb.csv', 'w', newline='') as fo:
+        header = ['','fecha','latitud','longitud','url','titulo','tipo_propiedad','precio','moneda','m2','ambientes']
+        propiedades_dos_amb = csv.DictWriter(fo, fieldnames=header)
+        propiedades_dos_amb.writeheader()
+
+
+        for i in range(len_reader):
+            row = reader[i]
+            ambientes = str(row.get('ambientes'))
+            if ambientes == '2': 
+                propiedades_dos_amb.writerow(row)   
+                dos_ambientes +=1
+
+
+    with open('propiedades_tres_amb.csv', 'w', newline='') as fo:
+        header = ['','fecha','latitud','longitud','url','titulo','tipo_propiedad','precio','moneda','m2','ambientes']
+        propiedades_tres_amb = csv.DictWriter(fo, fieldnames=header)
+        propiedades_tres_amb.writeheader()    
+
+        
+        for i in range(len_reader):
+            row = reader[i]
+            ambientes = str(row.get('ambientes'))
+            if ambientes == '3':
+                propiedades_tres_amb.writerow(row)
+                tres_ambientes += 1
+
+    
+    print(f'Las {dos_ambientes} propiedades de 2 ambientes fueron guardadas en el archivo "propiedades_dos_amb.csv" ')
+    print(f'Las {tres_ambientes} propiedades de 3 ambientes fueron guardadas en el archivo "propiedades_tres_amb.csv" ')
+
+        
+    
+   
+
 def ej4():
     # Ejercicios con diccionarios
-    inventario = {'manzanas': 6}
+    
 
     '''
     Realice un programa que pida por consola
@@ -95,10 +160,28 @@ def ej4():
     # Generar y completar el diccionario con las frutas y cantidades
     # ingresadas por consola hasta ingresar la palabra "FIN"
 
+    
+    inventario = {'manzanas': 6}
+
+    
+    print('Ingreso de frutas/verduras y su cantidad para realizar stock')    
+
+    
+    while True:    
+        agregar_item = input('Ingrese fruta/verdura o "FIN" para terminar:\n')
+        if agregar_item == 'FIN':
+            break
+        cantidad = int(input('Ingrese cantidad:\n'))
+        inventario[agregar_item] = cantidad
+    
+    
+    print(f'Se actualizo su inventario: {inventario}')    
+        
+
 
 def ej5():
     # Ejercicios con archivos CSV
-    inventario = {'Fruta Verdura': 'manzana', 'Cantidad': 10}
+    
 
     '''
     Parecido al el ejercicio anterior, genere un archivo CSV
@@ -136,10 +219,28 @@ def ej5():
     # writer.writerow({'Fruta Verdura': ....., 'Cantidad': ....})
 
 
+    with open('frutas_verduras_stock.csv', 'w', newline='') as fo:
+        header = ['Fruta/Verdura', 'Cantidad']
+        frutas_verduras_stock = csv.DictWriter(fo, fieldnames=header)
+        frutas_verduras_stock.writeheader()
+
+        
+        while True:
+            fruta_verdura = input('Ingrese fruta/verdura:\n')
+            if fruta_verdura == 'FIN':
+                break
+            cantidad = int(input('Ingrese cantida:\n'))
+            frutas_verduras_stock.writerow({'Fruta/Verdura':fruta_verdura, 'Cantidad':cantidad})
+
+    
+    print('Archivo "frutas_verduras_stock.csv" creado y actualizado con stock')
+
+
+
 if __name__ == '__main__':
     print("Bienvenidos a otra clase de Inove con Python")
-    ej1()
+    #ej1()
     #ej2()
-    #ej3()
+    ej3()
     #ej4()
     #ej5()
