@@ -16,6 +16,11 @@ __email__ = "alumnos@inove.com.ar"
 __version__ = "1.2"
 
 
+import csv
+from datetime import datetime, time
+from time import gmtime, strftime
+
+
 def ironman():
     print("Ahora sí! buena suerte :)")
 
@@ -96,6 +101,86 @@ def ironman():
     de Python que resuelva este problema.
 
     '''
+    contador_segundos = 0
+    nadar = []
+    bici = []
+    correr = []
+    
+    
+    
+    with open('2019 Ironman World Championship Results.csv', 'r') as fi:
+        reader = list(csv.DictReader(fi))
+        len_reader = len(reader)
+    
+        
+        while True:
+            opcion = input('Ingrese categoria para ver resultados o "FIN" para terminar:\n')
+            if opcion == 'FIN':
+                break
+            for i in range(len_reader):
+                row = reader[i]
+                division = row.get('Division')
+                swim = row.get('Swim')
+                bike = row.get('Bike')
+                run = row.get('Run')
+                if opcion == division:
+                    nadar.append(swim)
+                    bici.append(bike)
+                    correr.append(run)
+            
+
+            for i in nadar:
+                while '' in nadar:
+                    nadar.remove('')
+                seconds = segundos(i)
+                contador_segundos += seconds
+                promedio = contador_segundos / len(nadar)
+                promedio_nadar = prom(promedio)
+
+        
+            for i in bici:
+                while '' in bici:
+                    bici.remove('')
+                seconds = segundos(i)
+                contador_segundos += seconds
+                promedio = contador_segundos / len(bici)
+                promedio_bici = prom(promedio)
+
+
+            for i in correr:
+                while '' in correr:
+                    correr.remove('')
+                seconds = segundos(i)
+                contador_segundos += seconds
+                promedio = contador_segundos / len(correr)
+                promedio_correr = prom(promedio)
+
+
+            print(f'El promedio en la categoria {opcion} disciplina Swim es: {promedio_nadar}')     
+            print(f'El maximo tiempo en la categoria {opcion} disciplina Swim es: {max(nadar)}')
+            print(f'El minimo tiempo en la categoria {opcion} disciplina Swim es: {min(nadar)}\n')
+
+            print(f'El promedio en la categoria {opcion} disciplina Bike es: {promedio_bici}')     
+            print(f'El maximo tiempo en la categoria {opcion} disciplina Bike es: {max(bici)}')
+            print(f'El minimo tiempo en la categoria {opcion} disciplina Bike es: {min(bici)}\n')
+
+            print(f'El promedio en la categoria {opcion} disciplina Run es: {promedio_correr}')     
+            print(f'El maximo tiempo en la categoria {opcion} disciplina Run es: {max(correr)}')
+            print(f'El minimo tiempo en la categoria {opcion} disciplina Run es: {min(correr)}\n')
+    
+
+def segundos(i):
+    seconds = 0
+    formato = "%H:%M:%S"
+    h = datetime.strptime(i,formato)
+    seconds = h.hour * 3600 + h.minute * 60 + h.second
+    return seconds  
+
+
+def prom(promedio):   
+    promedios = strftime("%H:%M:%S", gmtime(promedio))
+    return promedios
+
 
 
 if __name__ == '__main__':
