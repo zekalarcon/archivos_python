@@ -11,9 +11,9 @@ Programa creado para que practiquen los conocimietos
 adquiridos durante la semana
 '''
 
-__author__ = "Inove Coding School"
-__email__ = "alumnos@inove.com.ar"
-__version__ = "1.2"
+__author__ = "Ezequiel Alarcon"
+__email__ = "zekalarcon@gamil.com"
+
 
 
 import csv
